@@ -33,19 +33,17 @@ class SeprateChaining:
     def display(self):
         for i in range(len(self._hashTable)):
             print(i, end=" ")
-            for j in self._hashTable[i]:
-                print("-->", end=" ")
-                print(j, end=" ")
+            if len(self._hashTable[i]) == 0:
+                print("->", end=" ")
+                print("NULL", end=" ")
+            else:
+                for j in self._hashTable[i]:
+                    print("->", end=" '")
+                    print(j, end="' ")
             print()
 
     def refresh(self):
         self._hashTable = [[] for _ in range(self._size)]
-
-    def convert(self, string):
-        for i in range(self._size):
-            for j in range(len(self._hashTable[i])):
-                string[i] += (self._hashTable[i][j] + "-> ")
-            string[i] += '' if 'NULL' in string[i] else 'NULL'
 
 
 class HashTable:
@@ -71,19 +69,12 @@ class HashTable:
     def display(self):
         for i in range(len(self._hashTable)):
             if self._hashTable[i] != None:
-                print(i, '', self._hashTable[i])
+                print(i, "'" + self._hashTable[i] + "'")
             else:
-                print(i, ' None!!!')
+                print(i, ' NULL')
 
     def refresh(self):
         self._hashTable = [None]*self._size
-
-    def convert(self, string):
-        for i in range(len(self._hashTable)):
-            if self._hashTable[i] != None:
-                string[i] += self._hashTable[i]
-            else:
-                string[i] += '' if 'NULL' in string[i] else 'NULL'
 
 
 class LinearProbing(HashTable):
@@ -124,7 +115,7 @@ class DoubleHashing(HashTable):
             return False
         hash_key = Hashing1(value, self._size)
         if self._hashTable[hash_key] != None:
-            hash_key1 = Hashing1(value)
+            hash_key1 = Hashing1(value, self._size)
             step = 0
             while True:
                 step += 1

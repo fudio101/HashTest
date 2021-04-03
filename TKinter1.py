@@ -10,8 +10,6 @@ SC = SeprateChaining(11)
 LP = LinearProbing(11)
 QP = QuadraticProbing(11)
 DH = DoubleHashing(11)
-dis = {0: '', 1: '', 2: '',   3: '',  4: '',
-       5: '', 6: '', 7: '', 8: '', 9: '', 10: ''}
 
 
 window = Tk()
@@ -45,8 +43,6 @@ def clicked():
 def refresh():
     global curr
     global dis
-    dis.update({0: '', 1: '', 2: '',   3: '',  4: '',
-                5: '', 6: '', 7: '', 8: '', 9: '', 10: ''})
     if curr == 0:
         SC.refresh()
     elif curr == 1:
@@ -57,39 +53,32 @@ def refresh():
         DH.refresh()
 
 
-def display():
-    global dis
-    global curr
-    if curr == 0:
-        SC.convert(dis)
-    elif curr == 1:
-        LP.convert(dis)
-    elif curr == 2:
-        QP.convert(dis)
-    elif curr == 3:
-        DH.convert(dis)
-    for i in range(len(dis)):
-        print(dis[i], end="\t")
-        print()
-    print()
-
-
 def insert():
     global curr
     global selected
+    print('\n\n\n')
     if curr != selected.get():
         refresh()
         curr = selected.get()
     if curr == 0:
         SC.insert(str(txt.get()))
+        print('Seprate Chaining')
+        SC.display()
     elif curr == 1:
         LP.insert(str(txt.get()))
+        print('Linear Probing')
+        LP.display()
     elif curr == 2:
         QP.insert(str(txt.get()))
+        print('Quadratic Probing')
+        QP.display()
     elif curr == 3:
         DH.insert(str(txt.get()))
-    display()
+        print('Double Hashing')
+        DH.display()
     return
+
+
 insert()
 
 btn = Button(window, text="Insert", command=insert)
