@@ -2,152 +2,29 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
 import tkinter
+from Hashing import *
 from typing import Collection, OrderedDict
 
 
-def Hashing(keyvalue, size):  # 1 + 2*n + 1 = O(n)
-    sum = 0
-    for i in keyvalue:
-        sum += ord(i)
-    return sum % size
+SC = SeprateChaining(11)
+LP = LinearProbing(11)
+QP = QuadraticProbing(11)
+DH = DoubleHashing(11)
+dis = {0: "", 1: "", 2: "",   3: "",  4: "",
+       5: "", 6: "", 7: "", 8: "", 9: "", 10: ""}
 
 
-def Hashing1(keyvalue, size):
-    sum = 0
-    prime = size // 2+1
-    for i in keyvalue:
-        sum += ord(i)
-    return (prime - (sum % prime))
-
-
-class SeprateChaining:
-    _size = 0
-    _hashTable = []
-
-    def __init__(self, size) -> None:
-        self._size = size
-        self._hashTable = [[] for _ in range(self._size)]
-
-    def insert(self, value):  # O(n)
-        hash_key = Hashing(value, self._size)
-        self._hashTable[hash_key].append(value)
-
-    def display(self):
-        for i in range(len(self._hashTable)):
-            print(i, end=" ")
-            for j in self._hashTable[i]:
-                print("-->", end=" ")
-                print(j, end=" ")
-            print()
-
-    def refresh(self):
-        self._hashTable = [[] for _ in range(self._size)]
-
-
-class HashTable:
-    _size = 0
-    _hashTable = []
-
-    def __init__(self, size) -> None:
-        self._size = size
-        self._hashTable = [None]*self._size
-
-    def _isFull(self):
-        currSize = 0
-        for i in range(self._size):
-            if self._hashTable[i] != None:
-                currSize += 1
-        if currSize >= self._size - 1:
-            return True
-        return False
-
-    def insert(self, value):
-        pass
-
-    def display(self):
-        for i in range(len(self._hashTable)):
-            if self._hashTable[i] != None:
-                print(i, '', self._hashTable[i])
-            else:
-                print(i, ' None!!!')
-
-    def refresh(self):
-        self._hashTable = [None]*self._size
-
-
-class LinearProbing(HashTable):
-    def insert(self, value):
-        if self._isFull():
-            return False
-        hash_key = Hashing(value, self._size)
-        step = 0
-        while self._hashTable[hash_key] != None:
-            step += 1
-            hash_key = (hash_key + step) % self._size
-        self._hashTable[hash_key] = value
-        return True
-
-
-class QuadraticProbing(HashTable):
-    def insert(self, value):
-        if self._isFull():
-            return False
-        hash_key = base = Hashing(value, self._size)
-        step = 0
-        while self._hashTable[hash_key] != None:
-            step += 1
-            hash_key = (base + step ** 2) % self._size
-        self._hashTable[hash_key] = value
-        return True
-
-
-class DoubleHashing(HashTable):
-    def insert(self, value):
-        if self._isFull():
-            return False
-        hash_key = Hashing1(value, self._size)
-        if self._hashTable[hash_key] != None:
-            hash_key1 = Hashing1(value)
-            step = 0
-            while True:
-                step += 1
-                hash_key = (hash_key + step * hash_key1) % self._size
-                if self._hashTable[hash_key] == None:
-                    self._hashTable[hash_key] = value
-                    break
-        else:
-            self._hashTable[hash_key] = value
-
-
-a = DoubleHashing(11)
-a.insert('dfnsfl')
-a.insert('skngkl')
-a.insert('asjfakjb')
-a.display()
 window = Tk()
 window.title("Hash table test")
 window.geometry("500x400")
-_hashTable = [None] * 11
-dis = {
-    0: "",
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
-    8: "",
-    9: "",
-    10: ""
-}
+
 
 lbl = Label(window, text="Please choose one: ", font=("Arial", 12))
 
 selected = IntVar()
 curr = 0
 
-rad1 = Radiobutton(window, text="Separate Chaining",
+rad1 = Radiobutton(window, text="Seprate Chaining",
                    value=0, variable=selected)
 
 rad2 = Radiobutton(window, text="Linear Probing", value=1, variable=selected)
@@ -167,63 +44,67 @@ def clicked():
 
 def refresh():
     global curr
-    switcher = {
-        0: sr(hashTable),
-        1: lr(_hashTable),
-        2: lr(_hashTable),
-        3: lr(_hashTable)
-    }
-    return switcher.get(curr)
+    global dis
+    dis.update({0: "", 1: "", 2: "",   3: "",  4: "",
+                5: "", 6: "", 7: "", 8: "", 9: "", 10: ""})
+    if curr == 0:
+        SC.refresh()
+    elif curr == 1:
+        LP.refresh()
+    elif curr == 2:
+        QP.refresh()
+    elif curr == 3:
+        DH.refresh()
 
 
 def display():
     global dis
-    global hashTable
-    global _hashTable
+    global curr
     if curr == 0:
-        # for i in range(len(hashTable)):
-        #     for j in range(hashTable[i]):
-        #         dis[i] += (j+"->")
-        #     dis[i] += "NULL"
-        pass
-    else:
-        for i in range(len(_hashTable)):
-            dis[i] = _hashTable[i]
+        SC.convert(dis)
+    elif curr == 1:
+        LP.convert(dis)
+    elif curr == 2:
+        QP.convert(dis)
+    elif curr == 3:
+        DH.convert(dis)
     for i in range(len(dis)):
         print(dis[i], end="\t")
-    print("\n")
+        print()
+    print()
 
 
 def insert():
     global curr
     global selected
     if curr != selected.get():
-        refresh()
         curr = selected.get()
-    switcher = {
-        0: si(hashTable, str(txt.get())),
-        1: li(_hashTable, str(txt.get())),
-        2: qi(_hashTable, str(txt.get())),
-        3: di(_hashTable, str(txt.get()))
-    }
-    switcher.get(curr)
+        refresh()
+        if curr == 0:
+            SC.insert(str(txt.get()))
+        elif curr == 1:
+            LP.insert(str(txt.get()))
+        elif curr == 2:
+            QP.insert(str(txt.get()))
+        elif curr == 3:
+            DH.insert(str(txt.get()))
     display()
     return
 
 
 btn = Button(window, text="Insert", command=insert)
 lbl_ = Label(window, text="")
-lbl0 = Label(window, text="0->" + dis[0], font=("Arial", 14))
-lbl1 = Label(window, text="1->" + dis[0], font=("Arial", 14))
-lbl2 = Label(window, text="2->" + dis[0], font=("Arial", 14))
-lbl3 = Label(window, text="3->" + dis[0], font=("Arial", 14))
-lbl4 = Label(window, text="4->" + dis[0], font=("Arial", 14))
-lbl5 = Label(window, text="5->" + dis[0], font=("Arial", 14))
-lbl6 = Label(window, text="6->" + dis[0], font=("Arial", 14))
-lbl7 = Label(window, text="7->" + dis[0], font=("Arial", 14))
-lbl8 = Label(window, text="8->" + dis[0], font=("Arial", 14))
-lbl9 = Label(window, text="9->" + dis[0], font=("Arial", 14))
-lbl10 = Label(window, text="10->" + dis[0], font=("Arial", 14))
+lbl0 = Label(window, text="0-> " + dis[0], font=("Arial", 14))
+lbl1 = Label(window, text="1-> " + dis[0], font=("Arial", 14))
+lbl2 = Label(window, text="2-> " + dis[0], font=("Arial", 14))
+lbl3 = Label(window, text="3-> " + dis[0], font=("Arial", 14))
+lbl4 = Label(window, text="4-> " + dis[0], font=("Arial", 14))
+lbl5 = Label(window, text="5-> " + dis[0], font=("Arial", 14))
+lbl6 = Label(window, text="6-> " + dis[0], font=("Arial", 14))
+lbl7 = Label(window, text="7-> " + dis[0], font=("Arial", 14))
+lbl8 = Label(window, text="8-> " + dis[0], font=("Arial", 14))
+lbl9 = Label(window, text="9-> " + dis[0], font=("Arial", 14))
+lbl10 = Label(window, text="10-> " + dis[0], font=("Arial", 14))
 
 lbl.grid(column=0, row=0)
 rad1.grid(column=0, row=1)
