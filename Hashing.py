@@ -1,3 +1,6 @@
+from Linear_probing import refresh
+
+
 def Hashing(keyvalue, size):  # 1 + 2*n + 1 = O(n)
     sum = 0
     for i in keyvalue:
@@ -22,6 +25,8 @@ class SeprateChaining:
         self._hashTable = [[] for _ in range(self._size)]
 
     def insert(self, value):  # O(n)
+        if value == '':
+            return
         hash_key = Hashing(value, self._size)
         self._hashTable[hash_key].append(value)
 
@@ -40,7 +45,7 @@ class SeprateChaining:
         for i in range(self._size):
             for j in range(len(self._hashTable[i])):
                 string[i] += (self._hashTable[i][j] + "-> ")
-            string[i] += "NULL"
+            string[i] += '' if 'NULL' in string[i] else 'NULL'
 
 
 class HashTable:
@@ -78,11 +83,13 @@ class HashTable:
             if self._hashTable[i] != None:
                 string[i] += self._hashTable[i]
             else:
-                string[i] += "None"
+                string[i] += '' if 'NULL' in string[i] else 'NULL'
 
 
 class LinearProbing(HashTable):
     def insert(self, value):
+        if value == '':
+            return
         if self._isFull():
             return False
         hash_key = Hashing(value, self._size)
@@ -96,6 +103,8 @@ class LinearProbing(HashTable):
 
 class QuadraticProbing(HashTable):
     def insert(self, value):
+        if value == '':
+            return
         if self._isFull():
             return False
         hash_key = base = Hashing(value, self._size)
@@ -109,6 +118,8 @@ class QuadraticProbing(HashTable):
 
 class DoubleHashing(HashTable):
     def insert(self, value):
+        if value == '':
+            return
         if self._isFull():
             return False
         hash_key = Hashing1(value, self._size)
