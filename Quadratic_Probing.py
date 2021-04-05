@@ -26,7 +26,7 @@ def Hashing(keyvalue):  # 1 + 2*n + 1 = O(n)
     return sum % hashTableSize
 
 
-def insert(hashTable, value):  # O(n) + O(n) + 1 + 5*n + 1 = O(n)
+def insert(hashTable, value):
     if isFull(hashTable):
         return
     hash_key = base = Hashing(value)

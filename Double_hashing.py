@@ -20,14 +20,14 @@ def isFull(hashTable):  # 1 + n + 2 + O(n)
     return False
 
 
-def Hashing1(keyvalue):  # 1 + 2*n + 1 = O(n)
+def Hashing(keyvalue):  # 1 + 2*n + 1 = O(n)
     _sum = 0
     for i in keyvalue:
         _sum += ord(i)
     return _sum % hashTableSize
 
 
-def Hashing2(keyvalue):  # 1 + 2*n + 2 = O(n)
+def Hashing1(keyvalue):
     sum = 0
     for i in keyvalue:
         sum += ord(i)
@@ -37,13 +37,13 @@ def Hashing2(keyvalue):  # 1 + 2*n + 2 = O(n)
 def insert(hashTable, value):  # O(n) + O(n) + n*(O(n) + 1 + 6*n) = O(n**2)
     if isFull(hashTable):
         return
-    hash_key = base = Hashing1(value)
+    hash_key = Hashing(value)
     if hashTable[hash_key] != None:
-        hash_key2 = Hashing2(value)
+        hash_key2 = Hashing1(value)
         step = 0
         while True:
             step += 1
-            hash_key = (base + step * hash_key2) % hashTableSize
+            hash_key = (hash_key + step * hash_key2) % hashTableSize
             if hashTable[hash_key] == None:
                 hashTable[hash_key] = value
                 break
