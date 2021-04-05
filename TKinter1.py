@@ -1,9 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import messagebox
-import tkinter
 from Hashing import *
-from typing import Collection, OrderedDict
 
 
 SC = SeprateChaining(11)
