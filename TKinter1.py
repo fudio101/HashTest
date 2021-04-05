@@ -53,6 +53,23 @@ def refresh():
         DH.refresh()
 
 
+def reset():
+    refresh()
+    print('\n\n\n')
+    if curr == 0:
+        print('Seprate Chaining')
+        SC.display()
+    elif curr == 1:
+        print('Linear Probing')
+        LP.display()
+    elif curr == 2:
+        print('Quadratic Probing')
+        QP.display()
+    elif curr == 3:
+        print('Double Hashing')
+        DH.display()
+
+
 def insert():
     global curr
     global selected
@@ -79,10 +96,8 @@ def insert():
     return
 
 
-insert()
-
 btn = Button(window, text="Insert", command=insert)
-btnr = Button(window, text="Reset", command=refresh)
+btnr = Button(window, text="Reset", command=reset)
 
 
 lbl.grid(column=0, row=0)
