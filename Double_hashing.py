@@ -34,7 +34,7 @@ def Hashing1(keyvalue):
     return (prime - (sum % prime))
 
 
-def insert(hashTable, value):  # O(n) + O(n) + n*(O(n) + 1 + 6*n) = O(n**2)
+def insert(hashTable, value):
     if isFull(hashTable):
         return
     hash_key = Hashing(value)
