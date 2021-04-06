@@ -29,11 +29,11 @@ def Hashing(keyvalue):  # 1 + 2*n + 1 = O(n)
 def insert(hashTable, value):
     if isFull(hashTable):
         return
-    hash_key = base = Hashing(value)
+    hash_key = Hashing(value)
     step = 0
     while hashTable[hash_key] != None:
         step += 1
-        hash_key = (base + step ** 2) % hashTableSize
+        hash_key = (hash_key + step ** 2) % hashTableSize
     hashTable[hash_key] = value
 
 

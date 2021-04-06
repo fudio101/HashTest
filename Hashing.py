@@ -10,7 +10,7 @@ def Hashing(keyvalue, size):  # 1 + 2*n + 1 = O(n)
 
 def Hashing1(keyvalue, size):
     sum = 0
-    prime = size // 2+1
+    prime = 7
     for i in keyvalue:
         sum += ord(i)
     return (prime - (sum % prime))

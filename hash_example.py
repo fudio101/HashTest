@@ -12,7 +12,7 @@ def hash2(key, m):
     sum = 0
     for i in key:
         sum += ord(i)
-    A = math.sqrt(5)-1
+    A = (math.sqrt(5)-1)/2
     return int(m*(sum*A % 1))
 
 

@@ -1,5 +1,5 @@
 hashTableSize = 11
-prime = 6
+prime = 7
 
 
 def display_hash(hashTable):
